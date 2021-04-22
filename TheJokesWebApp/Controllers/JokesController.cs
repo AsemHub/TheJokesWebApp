@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,12 @@ namespace TheJokesWebApp.Controllers
         public async Task<IActionResult> ShowSearchForm()
         {
             return View();
+        }
+
+        // POST: Jokes/ShowSearchResults
+        public async Task<IActionResult> ShowSearchResults(string SearchPhrase)
+        {
+            return View("Index" ,await _context.Joke.Where(j => j.JokeQuestion.Contains(SearchPhrase)).ToListAsync());
         }
 
         // GET: Jokes/Details/5
@@ -70,7 +77,7 @@ namespace TheJokesWebApp.Controllers
             return View(joke);
         }
 
-        // GET: Jokes/Edit/5
+        // GET: Jokes/Edit/5.    
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -121,7 +128,7 @@ namespace TheJokesWebApp.Controllers
             return View(joke);
         }
 
-        // GET: Jokes/Delete/5
+        // GET: Jokes/Delete/5.
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
